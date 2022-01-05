@@ -1,0 +1,42 @@
+﻿<Window x:Class="DialogValidation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Dialog Validation Example"
+        SizeToContent="WidthAndHeight">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button x:Name="AddNewButton" Content="Add Product" Click="AddNewButton_Click"/>
+        <!--    
+            DataGrid set IsReadOnly = "True" to avoid having to deal with additions and the NewItemPlaceholder.
+                The "New Product" button adds a new product directly to the collection, making for a safe and fully validated entry.
+            SelectionMode="Single", avoids visual confusion of multiple selections whereas code-behind only uses SelectedItem 
+                (Gets or sets the first item in the current selection or returns null if the selection is empty).
+        -->
+                
+        <DataGrid 
+            x:Name="ProductsDataGrid" Grid.Row="1" 
+            ToolTip="Select row to edit."
+            SelectionChanged="ProductsDataGrid_SelectionChanged" 
+            AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}"/>
+                <DataGridTextColumn Header="Product Description" Binding="{Binding ProductDescription}"/>
+                <DataGridTextColumn Header="Product Price" Binding="{Binding ProductPrice, StringFormat=\{0:C\}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
