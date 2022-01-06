@@ -7,6 +7,7 @@
         d:DataContext="{d:DesignInstance Type=DialogValidation:ProductItem}"
         mc:Ignorable="d"
         Title="ProductDialog" 
+        Foreground="White"
         SizeToContent="WidthAndHeight">
 
     <!-- 
@@ -21,10 +22,49 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="DictionaryTextBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
+            <Style x:Key="DefaultButtonStyle" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" BorderBrush="Transparent" BorderThickness="4" CornerRadius="8" Background="{TemplateBinding Background}">
+                                <Border CornerRadius="8">
+                                    <Border.Background>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#40DDDDDD" Offset="0"/>
+                                            <GradientStop Color="#40FFFFFF" Offset="0.1"/>
+                                            <GradientStop Color="#40888888" Offset="0.2"/>
+                                            <GradientStop Color="#40DDDDDD" Offset="0.8"/>
+                                            <GradientStop Color="#40FFFFFF" Offset="0.9"/>
+                                            <GradientStop Color="#40444444" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="Yellow"/>
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Margin" Value="1"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Opacity" Value="0.4"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     
-    <Grid Margin="4">
+    <!-- NOTE: Foreground is set in Window declaration, grid has no foreground property, -->
+    <Grid Margin="4" Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="200"/>
@@ -107,11 +147,12 @@
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-      
-            <Button x:Name="OkButton" Grid.Column="0" Content="OK" IsDefault="True" FontWeight="Bold" Click="OkButton_Click">
+
+            <Button x:Name="OkButton" Background="Green" Foreground="White" Grid.Column="0" Content="OK" IsDefault="True" FontWeight="Bold" Click="OkButton_Click" >
                 <Button.Style>
-                    <Style TargetType="Button">
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                         <Setter Property="IsEnabled" Value="False"/>
+                        
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=ProductName, Path=(Validation.HasError)}" Value="false">
                                 <Setter Property="IsEnabled" Value="True"/>
@@ -121,7 +162,13 @@
                 </Button.Style>
             </Button>
 
-            <Button x:Name="CancelButton" Grid.Column="2" FontWeight="Bold" Content="Cancel" IsCancel="True" Click="CancelButton_Click"/>
+            <Button 
+                x:Name="CancelButton" Grid.Column="2" 
+                Style="{StaticResource DefaultButtonStyle}" 
+                Background="Red" Foreground="White"
+                FontWeight="Bold" 
+                Content="Cancel" IsCancel="True" 
+                Click="CancelButton_Click"/>
             
         </Grid>
        
