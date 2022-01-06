@@ -154,9 +154,14 @@
                         <Setter Property="IsEnabled" Value="False"/>
                         
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=ProductName, Path=(Validation.HasError)}" Value="false">
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=ProductName, Path=(Validation.HasError)}" Value="false"/>
+                                    <Condition Binding="{Binding ElementName=ProductDescription, Path=(Validation.HasError)}" Value="false"/>
+                                    <Condition Binding="{Binding ElementName=ProductPrice, Path=(Validation.HasError)}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
                                 <Setter Property="IsEnabled" Value="True"/>
-                            </DataTrigger>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
